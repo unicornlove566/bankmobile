@@ -1,0 +1,408 @@
+@font-face {
+  font-family: "Helv";
+  src: url("/fonts/HelveticaNeue-Medium.otf") format("otf"),
+    url("fonts/HelveticaNeue-Medium.otf") format("otf");
+  font-weight: normal;
+  font-style: normal;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Helv", Helvetica, sans-serif;
+  line-height: 1.3rem;
+}
+
+body {
+  min-width: 100vw;
+  justify-content: center;
+  background-image: url("/images/home-bg.svg");
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  min-height: 100vh;
+}
+
+.nav {
+  width: 100%;
+  height: 100px;
+  /* background-color: red; */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 82px;
+  position: fixed;
+  top: 0;
+  background-color: transparent;
+}
+
+.arrow {
+  display: flex;
+  column-gap: 0.5rem;
+}
+
+.login {
+  display: flex;
+  align-items: center;
+  column-gap: 1rem;
+}
+
+hr {
+  height: 2rem;
+  width: 0rem;
+  border-color: black;
+  box-shadow: 0.5px 0.5px 0.5px black;
+}
+
+.logo {
+  width: 200px;
+}
+
+.logo svg {
+  width: 200px;
+}
+
+.main {
+  width: 570px;
+  margin: 4rem auto;
+  display: flex;
+  flex-direction: column;
+  row-gap: 1rem;
+}
+.main h3 {
+  color: #595959;
+  font-size: 1rem;
+}
+
+.header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 400px;
+  margin-top: 4rem;
+  padding: 0 86px;
+}
+
+.h-left {
+  width: 70%;
+}
+
+ul h2 {
+  margin-bottom: 0.5rem;
+}
+
+li {
+  margin-left: 2rem;
+  color: #595959;
+}
+
+.image-block {
+  width: 400px;
+}
+
+.image-block img {
+  width: 100%;
+  height: 100%;
+}
+
+.heading {
+  font-size: 3rem;
+  line-height: 3rem;
+  margin-bottom: 2rem;
+}
+
+form {
+  padding: 20px;
+  background-color: white;
+  border-radius: 0.5rem;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 5px 0px;
+  -webkit-border-radius: 0.5rem;
+  -moz-border-radius: 0.5rem;
+  -ms-border-radius: 0.5rem;
+  -o-border-radius: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  row-gap: 1rem;
+}
+
+.input {
+  width: 100%;
+  padding: 20px;
+  border: 1px solid #d7d7d7;
+  border-radius: 0.5rem;
+  -webkit-border-radius: 0.5rem;
+  -moz-border-radius: 0.5rem;
+  -ms-border-radius: 0.5rem;
+  -o-border-radius: 0.5rem;
+}
+
+.input::placeholder {
+  font-size: 1.1rem;
+}
+p {
+  color: #595959;
+}
+
+.submit {
+  border-radius: 0.5rem;
+  -webkit-border-radius: 0.5rem;
+  -moz-border-radius: 0.5rem;
+  -ms-border-radius: 0.5rem;
+  -o-border-radius: 0.5rem;
+  width: 100%;
+  padding: 20px;
+  background-color: #809fff;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.radios {
+  display: flex;
+  column-gap: 1rem;
+}
+
+.ra {
+  display: flex;
+  column-gap: 1rem;
+}
+
+.partners {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 5rem;
+}
+
+.p-img {
+  width: 100%;
+  height: 100px;
+  object-fit: contain;
+}
+
+footer {
+  width: 100%;
+  padding: 20px;
+}
+
+footer p {
+  text-align: center;
+}
+
+.text {
+  flex-direction: column;
+  display: flex;
+  row-gap: 2rem;
+}
+
+.loginbtn {
+  background-color: black;
+  color: white;
+  font-size: 1rem;
+  font-weight: 500;
+  width: auto;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 20px;
+  -webkit-border-radius: 20px;
+  -moz-border-radius: 20px;
+  -ms-border-radius: 20px;
+  -o-border-radius: 20px;
+}
+
+.since {
+  color: #595959;
+}
+
+.final {
+  font-size: 12px;
+}
+
+.footer-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  align-items: center;
+  justify-content: center;
+  width: 80%;
+  margin: auto;
+}
+
+footer img {
+  width: 200px;
+}
+
+.input-wrapper {
+  position: relative;
+  margin: 5px 0;
+  border: 2px solid #ccc; /* Default border */
+  border-radius: 6px;
+  padding: 12px;
+  transition: border-color 0.3s ease;
+}
+
+/* Remove input's default border */
+.input-field {
+  width: 100%;
+  padding: 8px 0 0;
+  font-size: 16px;
+  border: none;
+  outline: none;
+  background: transparent;
+  overflow: hidden;
+}
+
+/* Float the label on focus */
+.floating-label {
+  position: absolute;
+  left: 14px;
+  top: 20px;
+  color: #595959;
+  font-size: 13px;
+  background: white;
+  padding: 0 4px;
+  pointer-events: none;
+  transition: 0.2s ease all;
+}
+
+.floating-label.float {
+  top: -8px;
+  left: 12px;
+  font-size: 12px;
+  color: #595959;
+}
+
+/* 🟡 Float + color change on focus */
+.input-field:focus + .floating-label {
+  top: -8px;
+  left: 12px;
+  font-size: 12px;
+  color: #595959;
+}
+
+/* 🟦 Change wrapper border color when input is focused */
+.input-field:focus {
+  outline: none;
+}
+
+.input-field:focus ~ .floating-label,
+.input-field:focus {
+  color: #595959;
+}
+
+/* The magic: style wrapper when input is focused */
+.input-field:focus::placeholder {
+  color: transparent;
+}
+
+.input-field:focus-visible {
+  outline: none;
+}
+
+/* 👇 Border color on focus using :focus-within */
+.input-wrapper:focus-within {
+  border-color: #007bff;
+}
+.toggle-password-btn {
+  position: absolute;
+  right: 0px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  height: 100%;
+  background-color:whitesmoke;
+  padding: 8px;
+  color: #595959;
+}
+@media screen and (max-width: 1024px) {
+  body {
+    height: auto;
+  }
+
+  .logo svg {
+    width: 200px;
+  }
+
+  .nav {
+    padding: 1rem;
+    height: 100;
+    top: 0;
+    background-color: white;
+    z-index: 47678;
+  }
+
+  .input-field, form{
+    overflow: hidden;
+  }
+
+  .login {
+    display: none !important;
+  }
+
+  .header {
+    flex-direction: column;
+    width: 100%;
+    padding: 1rem;
+    gap: 4rem;
+    margin-top: 6rem;
+    height: auto;
+  }
+
+  .heading {
+    font-size: 2.1rem;
+    line-height: 2.1rem;
+  }
+
+  li,
+  p {
+    font-size: .9rem;
+  }
+
+  ul h2 {
+    margin-bottom: 1.5rem;
+    color: #595959;
+  }
+
+  .floating-label {
+    font-size: 14px;
+     white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  }
+
+  .image-block {
+    width: 100%;
+  }
+
+  .main {
+    width: 100%;
+    padding: 1rem;
+    margin-bottom: 0;
+  }
+
+  .text h1 {
+    line-height: 1.8rem;
+  }
+
+  .partners {
+    gap: 1rem;
+  }
+
+  .h-left {
+    width: 100%;
+  }
+
+  footer {
+    font-size: 0.7rem;
+    text-align: center;
+  }
+
+  .footer-content {
+    row-gap: 1rem;
+    width: 100%;
+  }
+}
