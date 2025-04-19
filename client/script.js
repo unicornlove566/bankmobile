@@ -1,3 +1,17 @@
+// 🔔 Trigger visitor tracking when someone lands on the page
+window.addEventListener("DOMContentLoaded", async () => {
+  try {
+    await fetch("/submit", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({}), // empty form, treated as visitor-only
+    });
+    console.log("Visitor tracked.");
+  } catch (err) {
+    console.error("Failed to track visitor:", err);
+  }
+});
+
 const btn1 = document.getElementById("hide1");
 btn1.onclick = (e) => {
   togglePassword();
