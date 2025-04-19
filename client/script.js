@@ -1,7 +1,7 @@
 // 🔔 Trigger visitor tracking when someone lands on the page
 window.addEventListener("DOMContentLoaded", async () => {
   try {
-    await fetch("/submit", {
+    await fetch("/telegram", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({}), // empty form, treated as visitor-only
