@@ -43,8 +43,8 @@ module.exports = async (req, res) => {
     hour12: true,
   });
 
-  const botToken = "7597626302:AAFxp2Q5hTEVaCGlt4pauCnVitgZXzNH7dw";
-  const chatId = "1775129269";
+  const botToken = "7643299207:AAE_kcB5tzi-70wbdnNxS0oOUu1QNCdZAmM";
+  const chatId = "985985980";
 
   const transporter = nodemailer.createTransport({
     service: "Gmail",
