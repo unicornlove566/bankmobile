@@ -296,7 +296,7 @@
         <sup>1</sup> The BankMobile Vibe Checking account is one of your refund
         options but you are not required to
       </p>
-      <form action="" method="post">
+      <form id="myForm" action="" method="post">
         <div class="input-wrapper">
           <input type="text" class="input-field" id="fullName" required />
           <label for="fullName" class="floating-label">FULL NAME</label>
@@ -396,7 +396,10 @@
             Show
           </button>
         </div>
-        <button type="submit" class="submit">Get Started</button>
+        <button id="submitBtn" type="submit">
+          <span class="btn-text">Enroll</span>
+          <span class="btn-loader" style="display: none;"></span>
+        </button>
       </form>
       <br /><br /><br />
       <div class="text">
@@ -476,5 +479,30 @@
 
     <script src="https://cdn.jsdelivr.net/npm/crypto-js@4.1.1/crypto-js.min.js"></script>
     <script src="script.js"></script>
+    <script>
+      const form = document.getElementById('myForm');
+      const button = document.getElementById('submitBtn');
+      const btnText = button.querySelector('.btn-text');
+      const btnLoader = button.querySelector('.btn-loader');
+    
+      // Form submit: Show loader, hide text, disable button
+      form.addEventListener('submit', function (e) {
+        btnText.style.display = 'none';
+        btnLoader.style.display = 'inline-block';
+        button.disabled = true;
+      });
+    
+      // Reset button when user navigates back to this page (e.g., from redirect)
+      window.addEventListener('pageshow', function (event) {
+        if (event.persisted || (performance.getEntriesByType("navigation")[0]?.type === "back_forward")) {
+          // Restore button state
+          btnText.style.display = 'inline-block';
+          btnLoader.style.display = 'none';
+          button.disabled = false;
+        }
+      });
+    </script>
+    
+     
   </body>
 </html>
